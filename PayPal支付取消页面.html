@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>支付取消 - PayPal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            padding: 20px;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 85, 0.1);
+            padding: 50px 40px;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            border-top: 5px solid #ffc439;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .icon {
+            width: 80px;
+            height: 80px;
+            background-color: #ffe8b3;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+        }
+
+        .icon svg {
+            width: 40px;
+            height: 40px;
+            color: #d4a017;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .timer {
+            color: #0070ba;
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #f0f8ff;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .footer-note {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #aaa;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </div>
+        <h1>支付已取消</h1>
+        <p>您已取消本次 PayPal 支付交易。</p>
+        <p>未完成支付，您的账户不会被扣款。</p>
+        <p>本页面将在 <span id="countdown">10</span> 秒后自动关闭。</p>
+        <div class="timer" id="timerDisplay">10</div>
+        <p class="footer-note">PayPal - 更安全、更简单的支付方式</p>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+            let secondsLeft = 10;
+            const countdownElement = document.getElementById('countdown');
+            const timerDisplayElement = document.getElementById('timerDisplay');
+
+            // 更新倒计时显示
+            function updateCountdown() {
+                countdownElement.textContent = secondsLeft;
+                timerDisplayElement.textContent = secondsLeft;
+            }
+
+            // 倒计时函数
+            const countdownInterval = setInterval(function() {
+                secondsLeft--;
+                updateCountdown();
+
+                if (secondsLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    closeWindow();
+                }
+            }, 1000);
+
+            // 关闭窗口函数
+            function closeWindow() {
+                // 尝试关闭窗口
+                window.close();
+                // 如果window.close()由于浏览器安全策略未立即生效，给出最终提示
+                setTimeout(() => {
+                    document.body.innerHTML = '<div class="container"><p>您可以手动关闭此标签页。</p></div>';
+                }, 500);
+            }
+
+            // 初始化显示
+            updateCountdown();
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>支付成功 - PayPal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .success-container {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            padding: 50px 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(to bottom right, #0070ba, #003087);
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .success-icon::before {
+            content: '';
+            width: 40px;
+            height: 20px;
+            border-left: 8px solid white;
+            border-bottom: 8px solid white;
+            transform: rotate(-45deg);
+            position: absolute;
+            top: 35px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .message {
+            color: #666;
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .timer {
+            font-size: 28px;
+            font-weight: bold;
+            color: #0070ba;
+            margin: 25px 0;
+            font-family: monospace;
+        }
+
+        .note {
+            font-size: 14px;
+            color: #888;
+            margin-top: 20px;
+            line-height: 1.5;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            .success-container {
+                padding: 40px 25px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            .message {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-icon"></div>
+        <h1>支付成功！</h1>
+        <p class="message">
+            感谢您使用PayPal完成支付。<br>
+            您的交易已处理完成。
+        </p>
+        <div class="timer" id="countdown">10</div>
+        <p class="note">
+            本页面将在 <span id="seconds">10</span> 秒后自动关闭。<br>
+            如果窗口没有自动关闭，请手动关闭此标签页。
+        </p>
+    </div>
+
+    <script>
+        // 倒计时功能
+        let timeLeft = 10;
+        const countdownElement = document.getElementById('countdown');
+        const secondsElement = document.getElementById('seconds');
+
+        // 更新倒计时显示
+        function updateCountdown() {
+            countdownElement.textContent = timeLeft;
+            secondsElement.textContent = timeLeft;
+            
+            if (timeLeft <= 0) {
+                // 尝试关闭窗口
+                closeWindow();
+            } else {
+                timeLeft--;
+                // 每秒更新一次
+                setTimeout(updateCountdown, 1000);
+            }
+        }
+
+        // 关闭窗口函数
+        function closeWindow() {
+            // 尝试关闭当前窗口/标签页
+            // 注意：window.close() 通常只能关闭由脚本打开的窗口，或某些浏览器中的当前标签页
+            // 这里提供一种安全的关闭方式
+            if (window.history.length > 1) {
+                // 如果有历史记录，则返回（模拟关闭效果）
+                window.history.back();
+            } else {
+                // 否则尝试关闭窗口
+                window.close();
+                
+                // 如果close()无效，显示提示
+                setTimeout(function() {
+                    if (!window.closed) {
+                        countdownElement.textContent = "0";
+                        document.querySelector('.note').innerHTML = 
+                            "请手动关闭此标签页。<br>" +
+                            "您也可以点击浏览器的后退按钮。";
+                    }
+                }, 500);
+            }
+        }
+
+        // 页面加载完成后开始倒计时
+        document.addEventListener('DOMContentLoaded', function() {
+            // 延迟一秒开始，让用户先看到页面
+            setTimeout(updateCountdown, 1000);
+        });
+    </script>
+</body>
+</html>
