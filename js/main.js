@@ -63,20 +63,20 @@ document.querySelectorAll('.platform-btn').forEach(button => {
 // 下载配置
 const DOWNLOAD_URL = 'https://example.com/downloads/elemental-havoc-trial.exe';
 
-// 下载次数功能
-let downloadCount = parseInt(localStorage.getItem('downloadCount')) || 0;
+// 总下载次数功能（所有用户共享）
+let totalDownloadCount = parseInt(localStorage.getItem('totalDownloadCount')) || 0;
 
-// 更新下载次数显示
-function updateDownloadCount() {
-    const countElement = document.getElementById('downloadCount');
+// 更新总下载次数显示
+function updateTotalDownloadCount() {
+    const countElement = document.getElementById('totalDownloadCount');
     if (countElement) {
-        countElement.textContent = downloadCount.toLocaleString();
+        countElement.textContent = totalDownloadCount.toLocaleString();
     }
 }
 
-// 初始化下载次数显示
+// 初始化总下载次数显示
 document.addEventListener('DOMContentLoaded', function() {
-    updateDownloadCount();
+    updateTotalDownloadCount();
 });
 
 // 下载按钮点击效果
@@ -85,10 +85,10 @@ if (downloadBtn) {
     downloadBtn.addEventListener('click', function(e) {
         e.preventDefault();
         
-        // 记录下载次数
-        downloadCount++;
-        localStorage.setItem('downloadCount', downloadCount);
-        updateDownloadCount();
+        // 记录总下载次数
+        totalDownloadCount++;
+        localStorage.setItem('totalDownloadCount', totalDownloadCount);
+        updateTotalDownloadCount();
         
         // 触发实际下载
         const link = document.createElement('a');
@@ -99,7 +99,7 @@ if (downloadBtn) {
         document.body.removeChild(link);
         
         // 显示下载提示
-        alert('感谢您对《元素浩劫：英雄重生》的兴趣！\n\n文件大小：15.8 GB\n下载次数：' + downloadCount + '\n预计下载时间：视网络情况而定');
+        alert('感谢您对《元素浩劫：英雄重生》的兴趣！\n\n文件大小：15.8 GB\n当前总下载次数：' + totalDownloadCount + '\n预计下载时间：视网络情况而定');
     });
 }
 
