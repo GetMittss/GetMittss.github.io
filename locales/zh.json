@@ -135,7 +135,7 @@
         "description": "现在下载《元素浩劫：英雄重生》，开启你的史诗冒险之旅。游戏提供免费试玩版，包含前3章完整内容。购买完整版可解锁所有英雄、技能和后续章节。",
         "freeBtn": "免费下载试玩版",
         "price": "完整版售价：¥198 | 豪华版售价：¥298 (包含季票和独家外观)",
-        "downloadCount": "下载次数",
+        "totalDownload": "总下载次数",
         "platforms": {
             "windows": "Windows",
             "playstation": "PlayStation",
