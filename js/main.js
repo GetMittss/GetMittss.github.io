@@ -1,6 +1,24 @@
 // 建设中的弹窗配置
 const CONSTRUCTION_MODAL_ENABLED = true; // 设置为 false 可关闭弹窗
 
+// 下载配置
+const DOWNLOAD_URL = 'https://example.com/downloads/elemental-havoc-trial.exe';
+
+// 总下载次数功能（所有用户共享）
+let totalDownloadCount = parseInt(localStorage.getItem('totalDownloadCount')) || 0;
+
+// 语言切换功能
+let currentLang = localStorage.getItem('lang') || 'zh';
+let translations = {};
+
+// 更新总下载次数显示
+function updateTotalDownloadCount() {
+    const countElement = document.getElementById('totalDownloadCount');
+    if (countElement) {
+        countElement.textContent = totalDownloadCount.toLocaleString();
+    }
+}
+
 // 初始化建设中的弹窗
 function initConstructionModal() {
     if (!CONSTRUCTION_MODAL_ENABLED) return;
@@ -28,143 +46,6 @@ function initConstructionModal() {
         });
     }
 }
-
-// 平滑滚动
-document.querySelectorAll('nav a, .btn-secondary').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        if(this.getAttribute('href').startsWith('#')) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            if(targetId === '#') return;
-            
-            const targetElement = document.querySelector(targetId);
-            
-            window.scrollTo({
-                top: targetElement.offsetTop - 80,
-                behavior: 'smooth'
-            });
-        }
-    });
-});
-
-// 平台按钮点击效果
-document.querySelectorAll('.platform-btn').forEach(button => {
-    button.addEventListener('click', function() {
-        alert('即将跳转到下载页面，请稍候...');
-    });
-});
-
-// 下载配置
-const DOWNLOAD_URL = 'https://example.com/downloads/elemental-havoc-trial.exe';
-
-// 总下载次数功能（所有用户共享）
-let totalDownloadCount = parseInt(localStorage.getItem('totalDownloadCount')) || 0;
-
-// 更新总下载次数显示
-function updateTotalDownloadCount() {
-    const countElement = document.getElementById('totalDownloadCount');
-    if (countElement) {
-        countElement.textContent = totalDownloadCount.toLocaleString();
-    }
-}
-
-// 初始化总下载次数显示
-document.addEventListener('DOMContentLoaded', function() {
-    updateTotalDownloadCount();
-});
-
-// 下载按钮点击效果
-const downloadBtn = document.getElementById('downloadBtn');
-if (downloadBtn) {
-    downloadBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        // 记录总下载次数
-        totalDownloadCount++;
-        localStorage.setItem('totalDownloadCount', totalDownloadCount);
-        updateTotalDownloadCount();
-        
-        // 触发实际下载
-        const link = document.createElement('a');
-        link.href = DOWNLOAD_URL;
-        link.download = 'elemental-havoc-trial.exe';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        
-        // 显示下载提示
-        alert('感谢您对《元素浩劫：英雄重生》的兴趣！\n\n文件大小：15.8 GB\n当前总下载次数：' + totalDownloadCount + '\n预计下载时间：视网络情况而定');
-    });
-}
-
-// 添加滚动效果
-window.addEventListener('scroll', function() {
-    const header = document.querySelector('header');
-    if (window.scrollY > 100) {
-        header.style.backgroundColor = 'rgba(10, 10, 30, 0.98)';
-    } else {
-        header.style.backgroundColor = 'rgba(10, 10, 30, 0.95)';
-    }
-});
-
-// 客服功能
-const serviceToggle = document.getElementById('serviceToggle');
-const servicePanel = document.getElementById('servicePanel');
-const closeService = document.getElementById('closeService');
-
-// 展开/收起客服面板
-if (serviceToggle) {
-    serviceToggle.addEventListener('click', function() {
-        servicePanel.classList.toggle('active');
-    });
-}
-
-// 关闭客服面板
-if (closeService) {
-    closeService.addEventListener('click', function() {
-        servicePanel.classList.remove('active');
-    });
-}
-
-// 点击外部关闭
-document.addEventListener('click', function(e) {
-    if (servicePanel && serviceToggle) {
-        if (!servicePanel.contains(e.target) && !serviceToggle.contains(e.target)) {
-            servicePanel.classList.remove('active');
-        }
-    }
-});
-
-// 发送邮件功能
-function sendEmail() {
-    const subject = encodeURIComponent('客服咨询 - 元素浩劫');
-    const body = encodeURIComponent('您好，\n\n我想咨询以下问题：\n\n\n--\n此邮件由网站在线客服系统发送');
-    window.location.href = 'mailto:mittss@zohomail.cn?subject=' + subject + '&body=' + body;
-}
-
-// 开始聊天
-function startChat(type) {
-    alert('正在连接 ' + type + ' 客服，请稍候...\n\n当前排队人数：3人\n预计等待时间：2-5分钟');
-}
-
-// 提交留言
-function submitMessage(e) {
-    e.preventDefault();
-    const name = document.getElementById('userName').value;
-    const email = document.getElementById('userEmail').value;
-    const message = document.getElementById('userMessage').value;
-    
-    if (name && email && message) {
-        alert('感谢您的留言！\n\n我们已收到您的反馈，客服人员将在24小时内通过邮箱回复您。\n\n提交内容：\n称呼：' + name + '\n邮箱：' + email + '\n问题：' + message);
-        document.getElementById('userName').value = '';
-        document.getElementById('userEmail').value = '';
-        document.getElementById('userMessage').value = '';
-    }
-}
-
-// 语言切换功能
-let currentLang = localStorage.getItem('lang') || 'zh';
-let translations = {};
 
 // 加载语言文件
 async function loadLanguage(lang) {
@@ -212,6 +93,9 @@ function applyTranslations() {
     if (translations.site && translations.site.title) {
         document.title = translations.site.title;
     }
+    
+    // 翻译完成后更新下载次数显示
+    updateTotalDownloadCount();
 }
 
 // 获取嵌套对象值
@@ -236,50 +120,165 @@ function updateLangSelector() {
     }
 }
 
-// 语言切换事件
-const langBtn = document.getElementById('langBtn');
-const langDropdown = document.getElementById('langDropdown');
-
-if (langBtn) {
-    langBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        langDropdown.classList.toggle('active');
-        document.querySelector('.language-selector').classList.toggle('active');
-    });
+// 发送邮件功能
+function sendEmail() {
+    const subject = encodeURIComponent('客服咨询 - 元素浩劫');
+    const body = encodeURIComponent('您好，\n\n我想咨询以下问题：\n\n\n--\n此邮件由网站在线客服系统发送');
+    window.location.href = 'mailto:mittss@zohomail.cn?subject=' + subject + '&body=' + body;
 }
 
-// 语言选项点击
-document.querySelectorAll('.lang-option').forEach(option => {
-    option.addEventListener('click', function() {
-        const lang = this.dataset.lang;
-        currentLang = lang;
-        localStorage.setItem('lang', lang);
-        loadLanguage(lang);
-        langDropdown.classList.remove('active');
-        document.querySelector('.language-selector').classList.remove('active');
-    });
-});
+// 开始聊天
+function startChat(type) {
+    alert('正在连接 ' + type + ' 客服，请稍候...\n\n当前排队人数：3人\n预计等待时间：2-5分钟');
+}
 
-// 点击外部关闭语言选择器
-document.addEventListener('click', function(e) {
-    const langSelector = document.querySelector('.language-selector');
-    if (langSelector && langDropdown) {
-        if (!langSelector.contains(e.target)) {
-            langDropdown.classList.remove('active');
-            langSelector.classList.remove('active');
-        }
+// 提交留言
+function submitMessage(e) {
+    e.preventDefault();
+    const name = document.getElementById('userName').value;
+    const email = document.getElementById('userEmail').value;
+    const message = document.getElementById('userMessage').value;
+    
+    if (name && email && message) {
+        alert('感谢您的留言！\n\n我们已收到您的反馈，客服人员将在24小时内通过邮箱回复您。\n\n提交内容：\n称呼：' + name + '\n邮箱：' + email + '\n问题：' + message);
+        document.getElementById('userName').value = '';
+        document.getElementById('userEmail').value = '';
+        document.getElementById('userMessage').value = '';
     }
-});
+}
 
 // 页面加载时初始化
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM Content Loaded');
-    initConstructionModal(); // 初始化建设弹窗
+    
+    // 初始化建设弹窗
+    initConstructionModal();
+    
+    // 初始化总下载次数显示
+    updateTotalDownloadCount();
+    
+    // 加载语言
     loadLanguage(currentLang);
+    
+    // 平滑滚动
+    document.querySelectorAll('nav a, .btn-secondary').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            if(this.getAttribute('href').startsWith('#')) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+    
+    // 平台按钮点击效果
+    document.querySelectorAll('.platform-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            alert('即将跳转到下载页面，请稍候...');
+        });
+    });
+    
+    // 下载按钮点击效果
+    const downloadBtn = document.getElementById('downloadBtn');
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // 记录总下载次数
+            totalDownloadCount++;
+            localStorage.setItem('totalDownloadCount', totalDownloadCount);
+            updateTotalDownloadCount();
+            
+            // 触发实际下载
+            const link = document.createElement('a');
+            link.href = DOWNLOAD_URL;
+            link.download = 'elemental-havoc-trial.exe';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // 显示下载提示
+            alert('感谢您对《元素浩劫：英雄重生》的兴趣！\n\n文件大小：15.8 GB\n当前总下载次数：' + totalDownloadCount + '\n预计下载时间：视网络情况而定');
+        });
+    }
+    
+    // 客服功能
+    const serviceToggle = document.getElementById('serviceToggle');
+    const servicePanel = document.getElementById('servicePanel');
+    const closeService = document.getElementById('closeService');
+    
+    // 展开/收起客服面板
+    if (serviceToggle) {
+        serviceToggle.addEventListener('click', function() {
+            servicePanel.classList.toggle('active');
+        });
+    }
+    
+    // 关闭客服面板
+    if (closeService) {
+        closeService.addEventListener('click', function() {
+            servicePanel.classList.remove('active');
+        });
+    }
+    
+    // 点击外部关闭客服面板
+    document.addEventListener('click', function(e) {
+        if (servicePanel && serviceToggle) {
+            if (!servicePanel.contains(e.target) && !serviceToggle.contains(e.target)) {
+                servicePanel.classList.remove('active');
+            }
+        }
+    });
+    
+    // 语言选择器
+    const langBtn = document.getElementById('langBtn');
+    const langDropdown = document.getElementById('langDropdown');
+    
+    if (langBtn) {
+        langBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            langDropdown.classList.toggle('active');
+            document.querySelector('.language-selector').classList.toggle('active');
+        });
+    }
+    
+    // 语言选项点击
+    document.querySelectorAll('.lang-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const lang = this.dataset.lang;
+            currentLang = lang;
+            localStorage.setItem('lang', lang);
+            loadLanguage(lang);
+            langDropdown.classList.remove('active');
+            document.querySelector('.language-selector').classList.remove('active');
+        });
+    });
+    
+    // 点击外部关闭语言选择器
+    document.addEventListener('click', function(e) {
+        const langSelector = document.querySelector('.language-selector');
+        if (langSelector && langDropdown) {
+            if (!langSelector.contains(e.target)) {
+                langDropdown.classList.remove('active');
+                langSelector.classList.remove('active');
+            }
+        }
+    });
 });
 
-// 如果 DOMContentLoaded 已经触发，立即加载
-if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    console.log('Document already ready, loading language');
-    loadLanguage(currentLang);
-}
+// 添加滚动效果
+window.addEventListener('scroll', function() {
+    const header = document.querySelector('header');
+    if (window.scrollY > 100) {
+        header.style.backgroundColor = 'rgba(10, 10, 30, 0.98)';
+    } else {
+        header.style.backgroundColor = 'rgba(10, 10, 30, 0.95)';
+    }
+});
