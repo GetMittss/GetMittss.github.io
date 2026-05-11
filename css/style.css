@@ -481,6 +481,19 @@
             transform: translateY(-5px);
         }
         
+        /* 下载统计样式 */
+        .download-stats {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #7070aa;
+        }
+        
+        .download-stats span:last-child {
+            color: #3a1cff;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
         /* 页脚 */
         footer {
             background-color: rgba(10, 10, 30, 0.95);
@@ -995,4 +1008,124 @@
         
         .lang-option.active .check {
             opacity: 1;
+        }
+        
+        /* 建设中弹窗样式 */
+        .construction-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .construction-modal.active {
+            display: flex;
+        }
+        
+        .construction-modal .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+        }
+        
+        .construction-modal .modal-content {
+            position: relative;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 2px solid #3a1cff;
+            border-radius: 20px;
+            padding: 50px 60px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(58, 28, 255, 0.3);
+            animation: modalPop 0.3s ease;
+            max-width: 90%;
+        }
+        
+        .construction-modal .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50%;
+            color: #a0a0ff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .construction-modal .modal-close:hover {
+            background: rgba(255, 42, 109, 0.3);
+            color: #ff2a6d;
+            transform: rotate(90deg);
+        }
+        
+        @keyframes modalPop {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .construction-modal .modal-icon {
+            font-size: 4rem;
+            color: #ffb800;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .construction-modal h2 {
+            font-size: 2rem;
+            color: #e0e0ff;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, #3a1cff, #ff2a6d);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .construction-modal p {
+            color: #a0a0ff;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+        
+        .construction-modal .modal-btn {
+            padding: 15px 50px;
+            background: linear-gradient(135deg, #3a1cff, #6a3cff);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(58, 28, 255, 0.4);
+        }
+        
+        .construction-modal .modal-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(58, 28, 255, 0.6);
         }
