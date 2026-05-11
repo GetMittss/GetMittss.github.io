@@ -613,22 +613,67 @@
             }
         }
         
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
             .header-content {
-                flex-direction: column;
-                text-align: center;
-                gap: 20px;
-            }
-            
-            nav ul {
-                justify-content: center;
                 flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
             }
             
-            nav ul li {
-                margin: 0 10px 5px;
+            .header-left {
+                width: 100%;
+                display: flex;
+                justify-content: center;
             }
             
+            .logo-text p {
+                font-size: 0.8rem;
+            }
+            
+            .header-center {
+                width: 100%;
+            }
+            
+            .header-center nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 8px;
+                padding: 0 10px;
+            }
+            
+            .header-center nav ul li {
+                margin: 0;
+            }
+            
+            .header-center nav ul li a {
+                font-size: 0.8rem;
+                padding: 4px 6px;
+                white-space: nowrap;
+            }
+            
+            .header-right {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .header-center nav ul {
+                gap: 5px;
+            }
+            
+            .header-center nav ul li a {
+                font-size: 0.75rem;
+                padding: 3px 5px;
+            }
+            
+            .lang-btn {
+                font-size: 0.85rem;
+                padding: 6px 10px;
+            }
+        }
+        
+        @media (max-width: 768px) {
             .hero h2 {
                 font-size: 2.2rem;
             }
