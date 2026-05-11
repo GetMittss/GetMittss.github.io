@@ -8,6 +8,19 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <!-- 建设中的弹窗 -->
+    <div class="construction-modal" id="constructionModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="closeConstructionModal"><i class="fas fa-times"></i></button>
+            <div class="modal-icon">
+                <i class="fas fa-hard-hat"></i>
+            </div>
+            <h2 data-i18n="modal.construction.title">请尽情期待</h2>
+            <p data-i18n="modal.construction.message">网站正在建设中...</p>
+        </div>
+    </div>
+
     <!-- 客服悬浮窗 -->
     <div class="customer-service">
         <div class="service-panel" id="servicePanel">
@@ -363,8 +376,11 @@
                     </div>
                 </div>
                 
-                <a href="#" class="btn btn-primary" style="font-size: 1.3rem; padding: 18px 45px;" data-i18n="download.freeBtn">免费下载试玩版</a>
+                <a href="#" id="downloadBtn" class="btn btn-primary" style="font-size: 1.3rem; padding: 18px 45px;" data-i18n="download.freeBtn">免费下载试玩版</a>
                 <p style="margin-top: 20px; font-size: 0.9rem; color: #9090cc;" data-i18n="download.price">完整版售价：¥198 | 豪华版售价：¥298 (包含季票和独家外观)</p>
+                <div class="download-stats">
+                    <span data-i18n="download.downloadCount">下载次数</span>: <span id="downloadCount">0</span>
+                </div>
             </div>
         </div>
     </section>
