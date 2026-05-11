@@ -132,9 +132,9 @@
     "download": {
         "title": "立即下载",
         "subtitle": "加入元素浩劫的世界",
-        "description": "现在下载《元素浩劫：英雄重生》，开启你的史诗冒险之旅。游戏提供免费试玩版，包含前3章完整内容。购买完整版可解锁所有英雄、技能和后续章节。",
+        "description": "现在下载《元素浩劫:英雄重生》,开启你的史诗冒险之旅。游戏提供免费试玩版,包含前3章完整内容。购买完整版可解锁所有英雄、技能和后续章节。",
         "freeBtn": "免费下载试玩版",
-        "price": "完整版售价：¥198 | 豪华版售价：¥298 (包含季票和独家外观)",
+        "price": "完整版售价:¥198 | 豪华版售价:¥298 (包含季票和独家外观)",
         "totalDownload": "总下载次数",
         "platforms": {
             "windows": "Windows",
@@ -145,14 +145,14 @@
     },
     "footer": {
         "brand": "元素浩劫：英雄重生",
-        "brandDesc": "一款史诗级元素战斗角色扮演游戏，由幻影游戏工作室开发。掌握元素之力，拯救濒危世界！",
+        "brandDesc": "一款史诗级元素战斗角色扮演游戏，由MITTSS游戏工作室开发。掌握元素之力，拯救濒危世界！",
         "quickLinks": "快速链接",
         "contact": "联系我们",
-        "contactEmail": "客服邮箱：mittss@zohomail.cn",
-        "contactWebsite": "官方网站：www.mittss.com",
-        "contactAddress": "工作室地址：深圳市隆瀚科技有限公司，深圳市市",
-        "contactPhone": "客服热线：400-123-4567",
-        "copyright": "© Shenzhen Longhan Technology Co., Ltd. 版权所有 | 《元素浩劫：英雄重生》是幻影游戏工作室的注册商标",
+        "contactEmail": "客服邮箱:mittss@zohomail.cn",
+        "contactWebsite": "官方网站:www.mittss.com",
+        "contactAddress": "工作室地址：深圳市隆瀚科技有限公司，深圳市",
+        "contactPhone": "客服热线:400-123-4567",
+        "copyright": "© Shenzhen Longhan Technology Co., Ltd. 版权所有 | 《元素浩劫:英雄重生》是MITTSS游戏工作室的注册商标",
         "copyrightNote": "本游戏适合16岁以上玩家 | 包含幻想暴力内容"
     },
     "modal": {
