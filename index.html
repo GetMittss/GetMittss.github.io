@@ -31,9 +31,9 @@
             <div class="service-body">
                 <ul class="service-list">
                     <li>
-                        <a href="javascript:void(0);" onclick="startChat('游戏问题')">
-                            <i class="fas fa-gamepad"></i>
-                            <span data-i18n="service.gameQuestion">游戏问题咨询</span>
+                        <a href="javascript:void(0);" onclick="startChat('投诉与建议')">
+                            <i class="fas fa-headset"></i>
+                            <span data-i18n="service.complaint">投诉与建议</span>
                             <span class="status" data-i18n="service.statusOnline">在线</span>
                         </a>
                     </li>
@@ -58,7 +58,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="mailto:mittss@zohomail.cn">
+                        <a href="javascript:void(0);" onclick="sendEmail()">
                             <i class="fas fa-envelope"></i>
                             <span data-i18n="service.emailContact">邮件联系客服</span>
                         </a>
@@ -81,10 +81,10 @@
                 </div>
             </div>
             <div class="service-footer">
-                <a href="#" title="微信"><i class="fab fa-weixin"></i></a>
-                <a href="#" title="QQ"><i class="fab fa-qq"></i></a>
-                <a href="#" title="Discord"><i class="fab fa-discord"></i></a>
-                <a href="#" title="邮件"><i class="fas fa-envelope"></i></a>
+                <a href="#" title="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+                <a href="#" title="PayPal"><i class="fab fa-paypal"></i></a>
+                <a href="javascript:sendEmail();" title="邮件"><i class="fas fa-envelope"></i></a>
                 <span class="online-status" data-i18n="service.onlineStatus">客服在线中</span>
             </div>
         </div>
@@ -96,38 +96,43 @@
     <!-- 头部区域 -->
     <header>
         <div class="container header-content">
-            <div class="logo">
-                <div class="logo-text">
-                    <h1 data-i18n="site.title">元素浩劫：英雄重生</h1>
-                    <p data-i18n="site.subtitle">Elemental Havoc: Heroes Reborn</p>
+            <div class="header-left">
+                <div class="logo">
+                    <div class="logo-text">
+                        <p data-i18n="site.subtitle">Elemental Havoc: Heroes Reborn</p>
+                    </div>
                 </div>
             </div>
-            <nav>
-                <ul>
-                    <li><a href="#intro" data-i18n="nav.intro">游戏介绍</a></li>
-                    <li><a href="#features" data-i18n="nav.features">游戏特色</a></li>
-                    <li><a href="#screenshots" data-i18n="nav.screenshots">游戏截图</a></li>
-                    <li><a href="#characters" data-i18n="nav.characters">英雄角色</a></li>
-                    <li><a href="#requirements" data-i18n="nav.requirements">系统要求</a></li>
-                    <li><a href="#download" data-i18n="nav.download">立即下载</a></li>
-                </ul>
-            </nav>
-            <div class="language-selector">
-                <button class="lang-btn" id="langBtn">
-                    <i class="fas fa-globe"></i>
-                    <span id="currentLang">中文</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="lang-dropdown" id="langDropdown">
-                    <div class="lang-option active" data-lang="zh">
-                        <span class="flag">🇨🇳</span>
-                        <span class="lang-name">简体中文</span>
-                        <i class="fas fa-check check"></i>
-                    </div>
-                    <div class="lang-option" data-lang="en">
-                        <span class="flag">🇺🇸</span>
-                        <span class="lang-name">English</span>
-                        <i class="fas fa-check check"></i>
+            <div class="header-center">
+                <nav>
+                    <ul>
+                        <li><a href="#intro" data-i18n="nav.intro">游戏介绍</a></li>
+                        <li><a href="#features" data-i18n="nav.features">游戏特色</a></li>
+                        <li><a href="#screenshots" data-i18n="nav.screenshots">游戏截图</a></li>
+                        <li><a href="#characters" data-i18n="nav.characters">英雄角色</a></li>
+                        <li><a href="#requirements" data-i18n="nav.requirements">系统要求</a></li>
+                        <li><a href="#download" data-i18n="nav.download">立即下载</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="language-selector">
+                    <button class="lang-btn" id="langBtn">
+                        <i class="fas fa-globe"></i>
+                        <span id="currentLang">中文</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="lang-dropdown" id="langDropdown">
+                        <div class="lang-option active" data-lang="zh">
+                            <span class="flag">🇨🇳</span>
+                            <span class="lang-name">简体中文</span>
+                            <i class="fas fa-check check"></i>
+                        </div>
+                        <div class="lang-option" data-lang="en">
+                            <span class="flag">🇺🇸</span>
+                            <span class="lang-name">English</span>
+                            <i class="fas fa-check check"></i>
+                        </div>
                     </div>
                 </div>
             </div>
