@@ -135,6 +135,7 @@
         "description": "Download Elemental Havoc: Heroes Reborn now and start your epic adventure! The free trial includes the complete first 3 chapters.",
         "freeBtn": "Free Download Trial",
         "price": "Full Version: $29.99 | Deluxe: $44.99 (includes season pass and exclusive cosmetics)",
+        "downloadCount": "Downloads",
         "platforms": {
             "windows": "Windows",
             "playstation": "PlayStation",
@@ -153,6 +154,13 @@
         "contactPhone": "Hotline: 400-123-4567",
         "copyright": "© Shenzhen Longhan Technology Co., Ltd. All Rights Reserved | Elemental Havoc: Heroes Reborn is a registered trademark of Phantom Game Studio",
         "copyrightNote": "This game is suitable for players 16+ | Contains fantasy violence"
+    },
+    "modal": {
+        "construction": {
+            "title": "Stay Tuned",
+            "message": "Website is under construction...",
+            "btn": "Got it"
+        }
     },
     "service": {
         "title": "Online Service",
