@@ -164,7 +164,7 @@
     },
     "service": {
         "title": "Online Service",
-        "gameQuestion": "Game Questions",
+        "complaint": "Complaints & Suggestions",
         "accountQuestion": "Account Issues",
         "purchaseQuestion": "Purchase & Payment",
         "bugReport": "Bug Report",

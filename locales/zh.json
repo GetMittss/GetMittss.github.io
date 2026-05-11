@@ -164,7 +164,7 @@
     },
     "service": {
         "title": "在线客服",
-        "gameQuestion": "游戏问题咨询",
+        "complaint": "投诉与建议",
         "accountQuestion": "账号问题反馈",
         "purchaseQuestion": "充值与购买",
         "bugReport": "BUG反馈提交",
