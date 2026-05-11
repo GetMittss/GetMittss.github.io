@@ -1,3 +1,40 @@
+// 建设中的弹窗配置
+const CONSTRUCTION_MODAL_ENABLED = true; // 设置为 false 可关闭弹窗
+
+// 初始化建设中的弹窗
+function initConstructionModal() {
+    if (!CONSTRUCTION_MODAL_ENABLED) return;
+    
+    const modal = document.getElementById('constructionModal');
+    const closeBtn = document.getElementById('closeConstructionModal');
+    const overlay = modal ? modal.querySelector('.modal-overlay') : null;
+    
+    if (!modal) return;
+    
+    // 检查是否已显示过弹窗
+    const hasSeenModal = localStorage.getItem('constructionModalSeen');
+    
+    if (!hasSeenModal) {
+        modal.classList.add('active');
+    }
+    
+    // 关闭弹窗
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            modal.classList.remove('active');
+            localStorage.setItem('constructionModalSeen', 'true');
+        });
+    }
+    
+    // 点击遮罩层关闭
+    if (overlay) {
+        overlay.addEventListener('click', function() {
+            modal.classList.remove('active');
+            localStorage.setItem('constructionModalSeen', 'true');
+        });
+    }
+}
+
 // 平滑滚动
 document.querySelectorAll('nav a, .btn-secondary').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
@@ -23,12 +60,46 @@ document.querySelectorAll('.platform-btn').forEach(button => {
     });
 });
 
+// 下载配置
+const DOWNLOAD_URL = 'https://example.com/downloads/elemental-havoc-trial.exe';
+
+// 下载次数功能
+let downloadCount = parseInt(localStorage.getItem('downloadCount')) || 0;
+
+// 更新下载次数显示
+function updateDownloadCount() {
+    const countElement = document.getElementById('downloadCount');
+    if (countElement) {
+        countElement.textContent = downloadCount.toLocaleString();
+    }
+}
+
+// 初始化下载次数显示
+document.addEventListener('DOMContentLoaded', function() {
+    updateDownloadCount();
+});
+
 // 下载按钮点击效果
-const downloadBtn = document.querySelector('.btn-primary[href="#"]');
+const downloadBtn = document.getElementById('downloadBtn');
 if (downloadBtn) {
     downloadBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        alert('感谢您对《元素浩劫：英雄重生》的兴趣！下载即将开始...\n\n文件大小：15.8 GB\n预计下载时间：视网络情况而定');
+        
+        // 记录下载次数
+        downloadCount++;
+        localStorage.setItem('downloadCount', downloadCount);
+        updateDownloadCount();
+        
+        // 触发实际下载
+        const link = document.createElement('a');
+        link.href = DOWNLOAD_URL;
+        link.download = 'elemental-havoc-trial.exe';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // 显示下载提示
+        alert('感谢您对《元素浩劫：英雄重生》的兴趣！\n\n文件大小：15.8 GB\n下载次数：' + downloadCount + '\n预计下载时间：视网络情况而定');
     });
 }
 
@@ -199,9 +270,10 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// 页面加载时初始化语言
+// 页面加载时初始化
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM Content Loaded');
+    initConstructionModal(); // 初始化建设弹窗
     loadLanguage(currentLang);
 });
 
