@@ -35,6 +35,31 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 20px;
+        }
+        
+        .header-left {
+            flex: 1;
+        }
+        
+        .header-center {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .placeholder-box {
+            width: 80px;
+            height: 40px;
+            background: rgba(58, 28, 255, 0.2);
+            border: 1px dashed rgba(58, 28, 255, 0.5);
+            border-radius: 8px;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
         
         .logo {
