@@ -11,18 +11,13 @@ function initConstructionModal() {
     
     if (!modal) return;
     
-    // 检查是否已显示过弹窗
-    const hasSeenModal = localStorage.getItem('constructionModalSeen');
-    
-    if (!hasSeenModal) {
-        modal.classList.add('active');
-    }
+    // 直接显示弹窗（每次都显示）
+    modal.classList.add('active');
     
     // 关闭弹窗
     if (closeBtn) {
         closeBtn.addEventListener('click', function() {
             modal.classList.remove('active');
-            localStorage.setItem('constructionModalSeen', 'true');
         });
     }
     
@@ -30,7 +25,6 @@ function initConstructionModal() {
     if (overlay) {
         overlay.addEventListener('click', function() {
             modal.classList.remove('active');
-            localStorage.setItem('constructionModalSeen', 'true');
         });
     }
 }
@@ -140,6 +134,13 @@ document.addEventListener('click', function(e) {
         }
     }
 });
+
+// 发送邮件功能
+function sendEmail() {
+    const subject = encodeURIComponent('客服咨询 - 元素浩劫');
+    const body = encodeURIComponent('您好，\n\n我想咨询以下问题：\n\n\n--\n此邮件由网站在线客服系统发送');
+    window.location.href = 'mailto:mittss@zohomail.cn?subject=' + subject + '&body=' + body;
+}
 
 // 开始聊天
 function startChat(type) {
