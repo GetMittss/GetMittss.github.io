@@ -3,388 +3,1341 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="site.title">元素浩劫：英雄重生</title>
+    <title>WastelandCovenant</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <style>
+        :root {
+            --primary-blue: #0ea5e9;
+            --primary-purple: #8b5cf6;
+            --primary-gold: #f59e0b;
+            --primary-green: #10b981;
+            --primary-red: #ef4444;
+            --dark-1: #0f172a;
+            --dark-2: #1e293b;
+            --dark-3: #334155;
+            --light-1: #f8fafc;
+            --light-2: #cbd5e1;
+            --accent-green: #10b981;
+            --accent-orange: #f59e0b;
+            --accent-red: #ef4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark-1);
+            color: var(--light-1);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* 导航栏 */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--dark-3);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple), var(--primary-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            white-space: nowrap;
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+            justify-content: center;
+            flex: 1;
+        }
+        
+        .nav-links a {
+            color: var(--light-2);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 0.5rem 0;
+            position: relative;
+            white-space: nowrap;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-blue);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple));
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .cta-button {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            white-space: nowrap;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(14, 165, 233, 0.3);
+        }
+        
+        /* 语言切换器 */
+        .language-selector {
+            position: relative;
+        }
+        
+        .language-btn {
+            background: transparent;
+            border: 1px solid var(--dark-3);
+            color: var(--light-2);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .language-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--primary-blue);
+        }
+        
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--dark-2);
+            border: 1px solid var(--dark-3);
+            border-radius: 6px;
+            padding: 0.5rem 0;
+            min-width: 120px;
+            display: none;
+            z-index: 1000;
+        }
+        
+        .language-selector:hover .language-dropdown {
+            display: block;
+        }
+        
+        .language-option {
+            padding: 0.5rem 1rem;
+            color: var(--light-2);
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .language-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--primary-blue);
+        }
+        
+        .language-option.active {
+            background: rgba(14, 165, 233, 0.1);
+            color: var(--primary-blue);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--light-1);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Hero 区域 */
+        .hero {
+            min-height: 100vh;
+            padding: 8rem 2rem 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(14, 165, 233, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                linear-gradient(to bottom, var(--dark-1) 0%, #020617 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23334155' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.3;
+            z-index: 0;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, var(--primary-blue), var(--primary-purple), var(--primary-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--light-2);
+            margin-bottom: 2.5rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .tech-badges {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2.5rem 0;
+        }
+        
+        .badge {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 0.75rem 1.25rem;
+            border-radius: 50px;
+            border-left: 4px solid var(--primary-blue);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: transform 0.3s;
+        }
+        
+        .badge:hover {
+            transform: translateY(-3px);
+        }
+        
+        .badge i {
+            color: var(--accent-green);
+            font-size: 1.1rem;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .hero-buttons .cta-button {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .secondary-button {
+            background: transparent;
+            border: 2px solid var(--primary-blue);
+            color: var(--primary-blue);
+        }
+        
+        .secondary-button:hover {
+            background: rgba(14, 165, 233, 0.1);
+        }
+        
+        /* 章节通用样式 */
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary-blue), var(--primary-purple));
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        /* 项目状态部分 */
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .status-card {
+            background: var(--dark-2);
+            border-radius: 12px;
+            padding: 2rem;
+            border-top: 4px solid var(--primary-blue);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .status-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .status-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .status-card h3 i {
+            color: var(--primary-blue);
+        }
+        
+        .milestone-list {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+        
+        .milestone-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+        }
+        
+        .milestone-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .milestone-list i {
+            color: var(--accent-green);
+            margin-right: 0.75rem;
+            font-size: 1.1rem;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        
+        .status-complete {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-green);
+        }
+        
+        .status-in-progress {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--accent-orange);
+        }
+        
+        .status-planned {
+            background: rgba(148, 163, 184, 0.2);
+            color: var(--light-2);
+        }
+        
+        /* 游戏特色部分 */
+        .features-section {
+            background: linear-gradient(to bottom, var(--dark-1) 0%, #0c1a2d 100%);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+        
+        .feature-card {
+            background: var(--dark-2);
+            border-radius: 12px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary-blue);
+            box-shadow: 0 15px 35px rgba(14, 165, 233, 0.15);
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple));
+        }
+        
+        .feature-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+        
+        .feature-card:nth-child(1) .feature-icon {
+            color: var(--primary-gold);
+        }
+        
+        .feature-card:nth-child(2) .feature-icon {
+            color: var(--primary-green);
+        }
+        
+        .feature-card:nth-child(3) .feature-icon {
+            color: var(--primary-blue);
+        }
+        
+        .feature-card:nth-child(4) .feature-icon {
+            color: var(--primary-purple);
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--light-1);
+        }
+        
+        .feature-card p {
+            color: var(--light-2);
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+        
+        .feature-tag {
+            background: rgba(14, 165, 233, 0.1);
+            color: var(--primary-blue);
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        
+        /* 开发日志部分 */
+        .dev-log {
+            background: var(--dark-2);
+        }
+        
+        .blog-posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .blog-card {
+            background: var(--dark-1);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            border: 1px solid var(--dark-3);
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-blue);
+        }
+        
+        .blog-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--dark-3), var(--dark-2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            color: var(--primary-blue);
+        }
+        
+        .blog-content {
+            padding: 1.75rem;
+        }
+        
+        .blog-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--light-2);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .blog-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1.25rem;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            background: rgba(14, 165, 233, 0.1);
+            color: var(--primary-blue);
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        
+        /* 封测申请部分 */
+        .apply-section {
+            background: linear-gradient(135deg, var(--dark-1) 0%, #0c1a2d 100%);
+        }
+        
+        .apply-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--dark-2);
+            border-radius: 16px;
+            padding: 3rem;
+            border: 1px solid var(--dark-3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .apply-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--light-1);
+        }
+        
+        .apply-info ul {
+            list-style: none;
+            margin: 1.5rem 0 2rem;
+        }
+        
+        .apply-info li {
+            padding: 0.75rem 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .apply-info li i {
+            color: var(--accent-green);
+            margin-right: 0.75rem;
+            font-size: 1.1rem;
+        }
+        
+        .apply-form {
+            margin-top: 2.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.75rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--light-1);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--dark-3);
+            border-radius: 8px;
+            color: var(--light-1);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        }
+        
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23cbd5e1' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 16px;
+            padding-right: 3rem;
+        }
+        
+        textarea.form-control {
+            min-height: 140px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        
+        .form-submit {
+            width: 100%;
+            padding: 1.1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+        
+        .form-note {
+            font-size: 0.9rem;
+            color: var(--light-2);
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+        
+        /* 招聘部分 */
+        .join-section {
+            background: linear-gradient(135deg, var(--dark-2) 0%, #1a2639 100%);
+        }
+        
+        .join-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+        
+        .join-card {
+            background: var(--dark-1);
+            border-radius: 12px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid var(--dark-3);
+        }
+        
+        .join-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-green);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.2);
+        }
+        
+        .join-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-green);
+        }
+        
+        .join-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--light-1);
+        }
+        
+        .join-card p {
+            color: var(--light-2);
+            margin-bottom: 1.5rem;
+        }
+        
+        .join-list {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+        
+        .join-list li {
+            padding: 0.5rem 0;
+            color: var(--light-2);
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .join-list li i {
+            color: var(--primary-green);
+            margin-right: 0.75rem;
+            margin-top: 0.25rem;
+        }
+        
+        .join-cta {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background: transparent;
+            border: 2px solid var(--primary-green);
+            color: var(--primary-green);
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .join-cta:hover {
+            background: rgba(16, 185, 129, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        /* 团队介绍部分 */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .team-card {
+            background: var(--dark-2);
+            border-radius: 12px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .team-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .team-icon {
+            font-size: 3.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 1.5rem;
+        }
+        
+        .team-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-info {
+            margin-top: 2rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: var(--light-2);
+        }
+        
+        .contact-item a {
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+        
+        .contact-item a:hover {
+            text-decoration: underline;
+        }
+        
+        /* 页脚 */
+        footer {
+            background: var(--dark-1);
+            padding: 3rem 2rem 2rem;
+            border-top: 1px solid var(--dark-3);
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+        
+        .footer-links h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--light-1);
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .footer-links a {
+            color: var(--light-2);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-blue);
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--dark-3);
+            color: var(--light-2);
+            font-size: 0.9rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1100px) {
+            .nav-links {
+                gap: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--dark-2);
+                flex-direction: column;
+                padding: 2rem;
+                border-bottom: 1px solid var(--dark-3);
+                z-index: 999;
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nav-right {
+                display: none;
+            }
+            
+            .mobile-nav-right {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+                margin-top: 2rem;
+                padding-top: 2rem;
+                border-top: 1px solid var(--dark-3);
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .section {
+                padding: 3rem 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .apply-container {
+                padding: 2rem 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .hero-buttons .cta-button {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .tech-badges {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .badge {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            header {
+                padding: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- 建设中的弹窗 -->
-    <div class="construction-modal" id="constructionModal">
-        <div class="modal-overlay"></div>
-        <div class="modal-content">
-            <button class="modal-close" id="closeConstructionModal"><i class="fas fa-times"></i></button>
-            <div class="modal-icon">
-                <i class="fas fa-hard-hat"></i>
-            </div>
-            <h2 data-i18n="modal.construction.title">请尽情期待</h2>
-            <p data-i18n="modal.construction.message">网站正在建设中...</p>
-        </div>
-    </div>
-
-    <!-- 客服悬浮窗 -->
-    <div class="customer-service">
-        <div class="service-panel" id="servicePanel">
-            <div class="service-header">
-                <h3><i class="fas fa-headset"></i> <span data-i18n="service.title">在线客服</span></h3>
-                <button class="close-btn" id="closeService"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="service-body">
-                <ul class="service-list">
-                    <li>
-                        <a href="javascript:void(0);" onclick="startChat('投诉与建议')">
-                            <i class="fas fa-headset"></i>
-                            <span data-i18n="service.complaint">投诉与建议</span>
-                            <span class="status" data-i18n="service.statusOnline">在线</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);" onclick="startChat('账号问题')">
-                            <i class="fas fa-user-circle"></i>
-                            <span data-i18n="service.accountQuestion">账号问题反馈</span>
-                            <span class="status" data-i18n="service.statusOnline">在线</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);" onclick="startChat('充值问题')">
-                            <i class="fas fa-coins"></i>
-                            <span data-i18n="service.purchaseQuestion">充值与购买</span>
-                            <span class="status" data-i18n="service.statusOnline">在线</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);" onclick="startChat('BUG反馈')">
-                            <i class="fas fa-bug"></i>
-                            <span data-i18n="service.bugReport">BUG反馈提交</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);" onclick="sendEmail()">
-                            <i class="fas fa-envelope"></i>
-                            <span data-i18n="service.emailContact">邮件联系客服</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="tel:400-123-4567">
-                            <i class="fas fa-phone-alt"></i>
-                            <span data-i18n="service.phoneContact">电话客服:400-123-4567</span>
-                        </a>
-                    </li>
-                </ul>
-                <div class="quick-chat">
-                    <h4><i class="fas fa-comment-dots"></i> <span data-i18n="service.quickMessage">快速留言</span></h4>
-                    <form class="chat-form" onsubmit="submitMessage(event)">
-                        <input type="text" id="userName" data-i18n-placeholder="service.namePlaceholder" placeholder="请输入您的称呼" required>
-                        <input type="email" id="userEmail" data-i18n-placeholder="service.emailPlaceholder" placeholder="请输入您的邮箱" required>
-                        <textarea id="userMessage" data-i18n-placeholder="service.messagePlaceholder" placeholder="请简要描述您的问题..." required></textarea>
-                        <button type="submit"><i class="fas fa-paper-plane"></i> <span data-i18n="service.submitBtn">提交留言</span></button>
-                    </form>
-                </div>
-            </div>
-            <div class="service-footer">
-                <a href="#" title="Facebook"><i class="fab fa-facebook"></i></a>
-                <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
-                <a href="#" title="PayPal"><i class="fab fa-paypal"></i></a>
-                <a href="javascript:sendEmail();" title="邮件"><i class="fas fa-envelope"></i></a>
-                <span class="online-status" data-i18n="service.onlineStatus">客服在线中</span>
-            </div>
-        </div>
-        <button class="service-toggle" id="serviceToggle">
-            <i class="fas fa-headset"></i>
-            <span class="service-badge">1</span>
-        </button>
-    </div>
-    <!-- 头部区域 -->
+    <!-- 导航栏 -->
     <header>
-        <div class="container header-content">
-            <div class="header-left">
-                <div class="logo">
-                    <div class="logo-text">
-                        <p data-i18n="site.subtitle">Elemental Havoc: Heroes Reborn</p>
-                    </div>
-                </div>
-            </div>
-            <div class="header-center">
-                <nav>
-                    <ul>
-                        <li><a href="#intro" data-i18n="nav.intro">游戏介绍</a></li>
-                        <li><a href="#features" data-i18n="nav.features">游戏特色</a></li>
-                        <li><a href="#screenshots" data-i18n="nav.screenshots">游戏截图</a></li>
-                        <li><a href="#characters" data-i18n="nav.characters">英雄角色</a></li>
-                        <li><a href="#requirements" data-i18n="nav.requirements">系统要求</a></li>
-                        <li><a href="#download" data-i18n="nav.download">立即下载</a></li>
-                    </ul>
-                </nav>
-            </div>
-            <div class="header-right">
-                <div class="language-selector">
-                    <button class="lang-btn" id="langBtn">
-                        <i class="fas fa-globe"></i>
-                        <span id="currentLang">中文</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-                    <div class="lang-dropdown" id="langDropdown">
-                        <div class="lang-option active" data-lang="zh">
-                            <span class="flag">🇨🇳</span>
-                            <span class="lang-name">简体中文</span>
-                            <i class="fas fa-check check"></i>
-                        </div>
-                        <div class="lang-option" data-lang="en">
-                            <span class="flag">🇺🇸</span>
-                            <span class="lang-name">English</span>
-                            <i class="fas fa-check check"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="logo">
+            <i class="fas fa-dice-d20 logo-icon"></i>
+            <span>MITTSS</span>
         </div>
+        
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home">首页</a></li>
+            <li><a href="#status">项目状态</a></li>
+            <li><a href="#features">游戏特色</a></li>
+            <li><a href="#dev-log">开发日志</a></li>
+            <li><a href="#apply">封测申请</a></li>
+            <li><a href="#join">加入我们</a></li>
+            <li><a href="#team">团队</a></li>
+            
+            
+        </ul>
+        
+        <div class="nav-right">
+            <div class="language-selector">
+                <button class="language-btn">
+                    <i class="fas fa-globe"></i>
+                    <span>中文</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="language-dropdown">
+                    <div class="language-option active" data-lang="zh">中文</div>
+                    <div class="language-option" data-lang="en">English</div>
+                    <div class="language-option" data-lang="ja">日本語</div>
+                    <div class="language-option" data-lang="ko">한국어</div>
+                </div>
+            </div>
+            <a href="#apply" class="cta-button">申请封测</a>
+        </div>
+        
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
     </header>
 
-    <!-- 英雄区域 -->
-    <section class="hero">
-        <div class="container">
-            <h2 data-i18n="hero.title">掌控元素之力，拯救濒危世界</h2>
-            <p data-i18n="hero.description">在《元素浩劫：英雄重生》中，你将扮演拥有元素之力的英雄，探索神秘大陆，对抗黑暗势力，揭开古老文明的秘密。史诗级战斗、深度角色定制和震撼视觉效果等待你的体验！</p>
-            <div class="cta-buttons">
-                <a href="#download" class="btn btn-primary pulse" data-i18n="hero.downloadBtn">立即下载</a>
-                <a href="#trailer" class="btn btn-secondary" data-i18n="hero.trailerBtn">游戏视频</a>
+    <!-- Hero区域 -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>沙盒生存MMO - WastelandCovenant</h1>
+            <p class="hero-subtitle">体验深度幻想世界,融合建筑、采集、座骑、宠物、自由PK与生存挑战。底层架构已完成验证,诚邀冒险者加入早期封测。</p>
+            
+            <div class="tech-badges">
+                <div class="badge">
+                    <i class="fas fa-check-circle"></i>
+                    <span>网络架构与数据持久化验证完成</span>
+                </div>
+                <div class="badge">
+                    <i class="fas fa-check-circle"></i>
+                    <span>订阅+外观商城支付模块已通</span>
+                </div>
+                <div class="badge">
+                    <i class="fas fa-check-circle"></i>
+                    <span>当前封测规模：50人稳定运行</span>
+                </div>
+            </div>
+            
+            <div class="hero-buttons">
+                <a href="#apply" class="cta-button">立即申请封测</a>
+                <a href="#join" class="cta-button secondary-button">加入开发团队</a>
             </div>
         </div>
     </section>
 
-    <!-- 游戏介绍 -->
-    <section id="intro" class="container">
-        <div class="section-title">
-            <h2 data-i18n="intro.title">游戏介绍</h2>
-        </div>
-        <div class="game-intro">
-            <div class="intro-content">
-                <div class="intro-text">
-                    <h3 data-i18n="intro.subtitle">史诗级元素战斗体验</h3>
-                    <p data-i18n="intro.content">这是一款由七人兼职团队，耗费八年心血独立打造的开放世界动作冒险游戏。在元素之力崩坏后的奇幻废土上，化身六大独特职业的英雄，探索危机四伏的遗迹与荒野。掌握动态"元素反应"战斗，利用风、火、水、土的力量组合出绚丽连招，对抗狂暴的怪物与敌对势力。在可自由切换的战术与全景视角下，体验流畅的移动、飞行与攀爬。既可孤身冒险，亦可与好友组队，在充满策略的实时战斗中，揭开世界崩坏的真相，决定文明的未来。</p>
-                </div>
-                <div class="intro-image">
-                    <img src="https://github.com/GetMittss/GetMittss.github.io/blob/main/image/image-1779647654382.png" alt="元素浩劫游戏场景">
-                </div>
+    <!-- 项目状态 -->
+    <section class="section" id="status">
+        <h2 class="section-title">项目状态</h2>
+        
+        <div class="status-grid">
+            <div class="status-card">
+                <h3><i class="fas fa-server"></i> 核心系统</h3>
+                <p>基础架构与核心技术已全面验证，确保游戏运行的稳定性和可靠性。</p>
+                <ul class="milestone-list">
+                    <li><i class="fas fa-check"></i> 持久服务器正常运行 <span class="status-badge status-complete">已完成</span></li>
+                    <li><i class="fas fa-check"></i> 数据库系统稳定 <span class="status-badge status-complete">已完成</span></li>
+                    <li><i class="fas fa-check"></i> Xsolla全球支付接口集成 <span class="status-badge status-complete">已完成</span></li>
+                    <li><i class="fas fa-check"></i> 客户端数据同步健全 <span class="status-badge status-complete">已完成</span></li>
+                    <li><i class="fas fa-check"></i> 部署测试数据库、服务器、REST、业务闭环稳健 <span class="status-badge status-complete">已完成</span></li>
+                </ul>
+            </div>
+            
+            <div class="status-card">
+                <h3><i class="fas fa-user-circle"></i> 角色与内容</h3>
+                <p>核心角色模型与基础动画已实现，正在进行特效和场景的开发工作。</p>
+                <ul class="milestone-list">
+                    <li><i class="fas fa-check"></i> 战士（男性）- 基础动画 <span class="status-badge status-complete">已完成</span></li>
+                    <li><i class="fas fa-check"></i> 战士（女性）- 基础动画 <span class="status-badge status-complete">已完成</span></li>
+                    <li><i class="fas fa-check"></i> 法师（男性）- 基础动画 <span class="status-badge status-complete">已完成</span></li>
+                    <li><i class="fas fa-check"></i> 法师（女性）- 基础动画 <span class="status-badge status-complete">已完成</span></li>
+                    <li><i class="fas fa-spinner"></i> 粒子系统 <span class="status-badge status-in-progress">开发中</span></li>
+                    <li><i class="fas fa-spinner"></i> 音效系统 <span class="status-badge status-in-progress">开发中</span></li>
+                    <li><i class="fas fa-clock"></i> 游戏场景 <span class="status-badge status-planned">未开始</span></li>
+                </ul>
+            </div>
+            
+            <div class="status-card">
+                <h3><i class="fas fa-users"></i> 团队与计划</h3>
+                <p>7人核心团队专注于技术实现与内容生产，持续推进项目开发进度。</p>
+                <ul class="milestone-list">
+                    <li><i class="fas fa-spinner"></i> 粒子与特效系统开发 <span class="status-badge status-in-progress">进行中</span></li>
+                    <li><i class="fas fa-spinner"></i> 音效系统实现 <span class="status-badge status-in-progress">进行中</span></li>
+                    <li><i class="fas fa-clock"></i> 游戏场景设计制作 <span class="status-badge status-planned">计划中</span></li>
+                    <li><i class="fas fa-clock"></i> 封测扩量（~200人规模） <span class="status-badge status-planned">计划中</span></li>
+                </ul>
             </div>
         </div>
     </section>
 
     <!-- 游戏特色 -->
-    <section id="features" class="container">
-        <div class="section-title">
-            <h2 data-i18n="features.title">游戏特色</h2>
-        </div>
-        <div class="features">
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <h3 data-i18n="features.items.0.title">动态元素战斗系统</h3>
-                    <p data-i18n="features.items.0.description">掌握火、水、土、风四大元素之力，通过元素组合创造连锁反应，实现华丽的战斗效果。每种元素都有独特的技能树和进化路径。</p>
+    <section class="section features-section" id="features">
+        <h2 class="section-title">游戏特色</h2>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-home"></i>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-globe-americas"></i>
-                    </div>
-                    <h3 data-i18n="features.items.1.title">庞大开放世界</h3>
-                    <p data-i18n="features.items.1.description">探索超过100平方公里的无缝地图,包含森林、沙漠、雪山、火山等多种生态环境。每个区域都有独特的敌人、资源和隐藏任务。</p>
+                <h3>建筑系统</h3>
+                <p>在中世纪幻想世界中建立您的领地。从简陋的小屋到宏伟的城堡，自由规划与建造您的家园。建筑不仅提供庇护，还能发展经济、存储资源，并成为社交活动的中心。</p>
+                <div class="feature-tags">
+                    <span class="feature-tag">领地建设</span>
+                    <span class="feature-tag">经济系统</span>
+                    <span class="feature-tag">自定义设计</span>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3 data-i18n="features.items.2.title">多人合作与竞技</h3>
-                    <p data-i18n="features.items.2.description">支持4人合作模式挑战史诗首领,或参与PvP竞技场测试你的战斗技巧。公会系统让你与朋友一起建立据点，争夺稀有资源。</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-tree"></i>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-user-cog"></i>
-                    </div>
-                    <h3 data-i18n="features.items.3.title">深度角色定制</h3>
-                    <p data-i18n="features.items.3.description">从8个初始英雄中选择,每个英雄都有独特的背景故事和初始元素亲和力。通过装备、技能和外观系统打造独一无二的英雄。</p>
+                <h3>采集与制造</h3>
+                <p>深入森林、矿山、河流，采集丰富资源。通过复杂的制造系统，将原材料转化为武器装备、药剂工具。掌握不同专业的制造技能，成为王国中不可或缺的工匠大师。</p>
+                <div class="feature-tags">
+                    <span class="feature-tag">资源采集</span>
+                    <span class="feature-tag">制造系统</span>
+                    <span class="feature-tag">专业技能</span>
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-horse"></i>
+                </div>
+                <h3>座骑系统</h3>
+                <p>驯服中世纪世界的各种生物作为您的座骑。从普通的马匹到传说中的飞龙，每种座骑都有独特的属性与技能。培养、训练您的座骑，与它们建立深厚的羁绊关系。</p>
+                <div class="feature-tags">
+                    <span class="feature-tag">生物驯服</span>
+                    <span class="feature-tag">坐骑培养</span>
+                    <span class="feature-tag">战斗伙伴</span>
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-paw"></i>
+                </div>
+                <h3>宠物伙伴</h3>
+                <p>在冒险途中遇到各式各样的生物，将它们收为宠物伙伴。宠物不仅提供战斗协助，还能在采集、探索中发挥特殊能力。培养宠物的独特技能，打造最强的冒险团队。</p>
+                <div class="feature-tags">
+                    <span class="feature-tag">宠物收集</span>
+                    <span class="feature-tag">战斗协助</span>
+                    <span class="feature-tag">技能培养</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 游戏截图 -->
-    <section id="screenshots" class="container">
-        <div class="section-title">
-            <h2 data-i18n="screenshots.title">游戏截图</h2>
-        </div>
-        <div class="screenshots">
-            <div class="screenshot-grid">
-                <div class="screenshot-item">
-                    <div class="screenshot-img">
-                        <img src="https://github.com/GetMittss/GetMittss.github.io/blob/main/image/image-1779647654382.png" alt="元素战斗场景">
-                    </div>
-                    <div class="screenshot-info">
-                        <h3 data-i18n="screenshots.items.0.title">史诗级元素战斗</h3>
-                        <p data-i18n="screenshots.items.0.description">华丽的技能特效和震撼的战斗场面</p>
-                    </div>
+    <!-- 开发日志 -->
+    <section class="section dev-log" id="dev-log">
+        <h2 class="section-title">开发日志</h2>
+        
+        <div class="blog-posts">
+            <div class="blog-card">
+                <div class="blog-image">
+                    <i class="fas fa-server"></i>
                 </div>
-                <div class="screenshot-item">
-                    <div class="screenshot-img">
-                        <img src="https://github.com/GetMittss/GetMittss.github.io/blob/main/image/image-1779648170251.png" alt="开放世界探索">
+                <div class="blog-content">
+                    <h3>服务器架构优化与压力测试</h3>
+                    <div class="blog-meta">
+                        <span>2026年6月20日</span>
+                        <span>技术更新</span>
                     </div>
-                    <div class="screenshot-info">
-                        <h3 data-i18n="screenshots.items.1.title">广阔开放世界</h3>
-                        <p data-i18n="screenshots.items.1.description">多样化的生态环境和隐藏的秘密</p>
-                    </div>
-                </div>
-                <div class="screenshot-item">
-                    <div class="screenshot-img">
-                        <img src="https://github.com/GetMittss/GetMittss.github.io/blob/main/image/image-1779647654382.png" alt="角色定制界面">
-                    </div>
-                    <div class="screenshot-info">
-                        <h3 data-i18n="screenshots.items.2.title">深度角色定制</h3>
-                        <p data-i18n="screenshots.items.2.description">丰富的装备和技能选择</p>
-                    </div>
-                </div>
-                <div class="screenshot-item">
-                    <div class="screenshot-img">
-                        <img src="https://github.com/GetMittss/GetMittss.github.io/blob/main/image/image-1779647654382.png" alt="多人合作战斗">
-                    </div>
-                    <div class="screenshot-info">
-                        <h3 data-i18n="screenshots.items.3.title">多人合作模式</h3>
-                        <p data-i18n="screenshots.items.3.description">与朋友一起挑战强大首领</p>
+                    <p>完成服务器架构的模块化拆分，优化了状态同步机制。当前服务器在50人并发下稳定运行，延迟保持在合理范围内。下一步将进行200人压力测试。</p>
+                    <div class="blog-tags">
+                        <span class="tag">服务端</span>
+                        <span class="tag">性能优化</span>
+                        <span class="tag">网络</span>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- 英雄角色 -->
-    <section id="characters" class="container">
-        <div class="section-title">
-            <h2 data-i18n="characters.title">英雄角色</h2>
-        </div>
-        <div class="characters">
-            <div class="character-grid">
-                <div class="character-card">
-                    <div class="character-img">
-                        <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="烈焰使者">
+            
+            <div class="blog-card">
+                <div class="blog-image">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="blog-content">
+                    <h3>支付模块完成：订阅+外观商城</h3>
+                    <div class="blog-meta">
+                        <span>2026年5月15日</span>
+                        <span>系统更新</span>
                     </div>
-                    <div class="character-info">
-                        <h3 data-i18n="characters.items.0.name">烈焰使者 - 伊格尼斯</h3>
-                        <span class="element-tag fire" data-i18n="characters.items.0.element">火元素</span>
-                        <p data-i18n="characters.items.0.description">来自火山之地的战士，掌握毁灭性的火焰魔法，擅长范围攻击和持续伤害。</p>
+                    <p>实现完整的支付流程闭环,支持7天免费体验后无缝转为订阅用户,外观商城道具购买流程稳定，数据持久化验证通过。所有支付逻辑在客户端内完成。</p>
+                    <div class="blog-tags">
+                        <span class="tag">支付系统</span>
+                        <span class="tag">商城</span>
+                        <span class="tag">客户端</span>
                     </div>
                 </div>
-                <div class="character-card">
-                    <div class="character-img">
-                        <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="潮汐守护者">
-                    </div>
-                    <div class="character-info">
-                        <h3 data-i18n="characters.items.1.name">潮汐守护者 - 阿奎亚</h3>
-                        <span class="element-tag water" data-i18n="characters.items.1.element">水元素</span>
-                        <p data-i18n="characters.items.1.description">海洋王国的公主，操控水流进行攻击和治疗，是团队中不可或缺的支持者。</p>
-                    </div>
+            </div>
+            
+            <div class="blog-card">
+                <div class="blog-image">
+                    <i class="fas fa-map"></i>
                 </div>
-                <div class="character-card">
-                    <div class="character-img">
-                        <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="大地守护者">
+                <div class="blog-content">
+                    <h3>场景模块化与内容管线搭建</h3>
+                    <div class="blog-meta">
+                        <span>2024年5月10日</span>
+                        <span>美术更新</span>
                     </div>
-                    <div class="character-info">
-                        <h3 data-i18n="characters.items.2.name">大地守护者 - 泰拉</h3>
-                        <span class="element-tag earth" data-i18n="characters.items.2.element">土元素</span>
-                        <p data-i18n="characters.items.2.description">古老山脉的守护者，拥有强大的防御能力和控制技能，是团队的前线坦克。</p>
-                    </div>
-                </div>
-                <div class="character-card">
-                    <div class="character-img">
-                        <img src="https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="风暴召唤者">
-                    </div>
-                    <div class="character-info">
-                        <h3 data-i18n="characters.items.3.name">风暴召唤者 - 泽菲尔</h3>
-                        <span class="element-tag air" data-i18n="characters.items.3.element">风元素</span>
-                        <p data-i18n="characters.items.3.description">天空之城的法师，驾驭风暴与闪电，拥有极高的机动性和爆发伤害。</p>
+                    <p>确立场景模块化规范，建立美术资产生产管线。首个安全区场景与野外区域已进入制作阶段，预计下月完成基础搭建。采用模块化设计提高内容迭代效率。</p>
+                    <div class="blog-tags">
+                        <span class="tag">场景设计</span>
+                        <span class="tag">美术管线</span>
+                        <span class="tag">内容生产</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 系统要求 -->
-    <section id="requirements" class="container">
-        <div class="section-title">
-            <h2 data-i18n="requirements.title">系统要求</h2>
-        </div>
-        <div class="requirements">
-            <table class="requirements-table">
-                <thead>
-                    <tr>
-                        <th data-i18n="requirements.table.config">配置</th>
-                        <th data-i18n="requirements.table.minimum">最低要求</th>
-                        <th data-i18n="requirements.table.recommended">推荐配置</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="spec-label" data-i18n="requirements.items.0.label">操作系统</td>
-                        <td data-i18n="requirements.items.0.minimum">Windows 10 64位</td>
-                        <td data-i18n="requirements.items.0.recommended">Windows 11 64位</td>
-                    </tr>
-                    <tr>
-                        <td class="spec-label" data-i18n="requirements.items.1.label">处理器</td>
-                        <td data-i18n="requirements.items.1.minimum">Intel Core i5-6600 / AMD Ryzen 5 1600</td>
-                        <td data-i18n="requirements.items.1.recommended">Intel Core i7-10700 / AMD Ryzen 7 3700X</td>
-                    </tr>
-                    <tr>
-                        <td class="spec-label" data-i18n="requirements.items.2.label">内存</td>
-                        <td data-i18n="requirements.items.2.minimum">8 GB RAM</td>
-                        <td data-i18n="requirements.items.2.recommended">16 GB RAM</td>
-                    </tr>
-                    <tr>
-                        <td class="spec-label" data-i18n="requirements.items.3.label">显卡</td>
-                        <td data-i18n="requirements.items.3.minimum">NVIDIA GTX 1060 6GB / AMD RX 580 8GB</td>
-                        <td data-i18n="requirements.items.3.recommended">NVIDIA RTX 3060 / AMD RX 6700 XT</td>
-                    </tr>
-                    <tr>
-                        <td class="spec-label" data-i18n="requirements.items.4.label">DirectX</td>
-                        <td data-i18n="requirements.items.4.minimum">版本 11</td>
-                        <td data-i18n="requirements.items.4.recommended">版本 12</td>
-                    </tr>
-                    <tr>
-                        <td class="spec-label" data-i18n="requirements.items.5.label">存储空间</td>
-                        <td data-i18n="requirements.items.5.minimum">50 GB 可用空间</td>
-                        <td data-i18n="requirements.items.5.recommended">50 GB 可用空间 (SSD推荐)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-
-    <!-- 下载区域 -->
-    <section id="download" class="container">
-        <div class="section-title">
-            <h2 data-i18n="download.title">立即下载</h2>
-        </div>
-        <div class="download">
-            <div class="download-content">
-                <h3 data-i18n="download.subtitle">加入元素浩劫的世界</h3>
-                <p data-i18n="download.description">现在下载《元素浩劫：英雄重生》,开启你的史诗冒险之旅。游戏提供免费试玩版,包含前3章完整内容。购买完整版可解锁所有英雄、技能和后续章节。</p>
+    <!-- 封测申请 -->
+    <section class="section apply-section" id="apply">
+        <h2 class="section-title">封测申请</h2>
+        
+        <div class="apply-container">
+            <div class="apply-info">
+                <h3>加入早期封测，共同塑造游戏未来</h3>
+                <p>当前我们正在进行限量封测,服务器承载上限为50人,以确保每位参与者都能获得优质体验并给予有效反馈。</p>
                 
-                <div class="platforms">
-                    <div class="platform-btn">
-                        <i class="fab fa-windows"></i> <span data-i18n="download.platforms.windows">Windows</span>
-                    </div>
-                    <div class="platform-btn">
-                        <i class="fab fa-playstation"></i> <span data-i18n="download.platforms.playstation">PlayStation</span>
-                    </div>
-                    <div class="platform-btn">
-                        <i class="fab fa-xbox"></i> <span data-i18n="download.platforms.xbox">Xbox</span>
-                    </div>
-                    <div class="platform-btn">
-                        <i class="fab fa-steam"></i> <span data-i18n="download.platforms.steam">Steam</span>
-                    </div>
-                </div>
+                <ul>
+                    <li><i class="fas fa-check"></i> 7天免费体验期,完整功能可用</li>
+                    <li><i class="fas fa-check"></i> 数据会保留至公测（除非重大重置）</li>
+                    <li><i class="fas fa-check"></i> 与开发团队直接沟通的机会</li>
+                    <li><i class="fas fa-check"></i> 对游戏方向有实际影响力</li>
+                </ul>
                 
-                <a href="#" id="downloadBtn" class="btn btn-primary" style="font-size: 1.3rem; padding: 18px 45px;" data-i18n="download.freeBtn">免费下载试玩版</a>
-                <p style="margin-top: 20px; font-size: 0.9rem; color: #9090cc;" data-i18n="download.price">完整版售价:¥198 | 豪华版售价:¥298 (包含季票和独家外观)</p>
-                <div class="download-stats">
-                    <span data-i18n="download.totalDownload">总下载次数</span>: <span id="totalDownloadCount">0</span>
+                <p>申请通过后，您将收到包含客户端下载链接和详细说明的邮件。所有账号注册、登录、订阅操作均在客户端内完成。</p>
+            </div>
+            
+            <div class="apply-form">
+                <form id="betaForm">
+                    <div class="form-group">
+                        <label for="name">称呼/昵称 *</label>
+                        <input type="text" id="name" class="form-control" required placeholder="您在游戏内希望使用的昵称">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">邮箱 *</label>
+                        <input type="email" id="email" class="form-control" required placeholder="用于接收封测邀请和客户端下载链接">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contact">Discord/QQ/Steam</label>
+                        <input type="text" id="contact" class="form-control" placeholder="选填，便于我们与您联系">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="experience">MMO游戏经历 *</label>
+                        <select id="experience" class="form-control" required>
+                            <option value="">请选择最符合的选项</option>
+                            <option value="hardcore">硬核MMO玩家(魔兽/FF14/激战2等1000+小时)</option>
+                            <option value="experienced">有经验的MMO玩家(多个MMO经验)</option>
+                            <option value="casual">休闲MMO玩家</option>
+                            <option value="new">MMO新手但想尝试</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="interest">您希望我们告知您什么？ *</label>
+                        <select id="interest" class="form-control" required>
+                            <option value="">请选择</option>
+                            <option value="beta">封测资格与客户端下载</option>
+                            <option value="news">开发进展与公告</option>
+                            <option value="both">两者都要</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">其他想说的话（可选）</label>
+                        <textarea id="message" class="form-control" placeholder="例如:您希望在我们的MMO中看到什么样的核心玩法?您对当前MMO市场有何看法?"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="cta-button form-submit">提交封测申请</button>
+                    
+                    <p class="form-note">我们会在3-5个工作日内审核您的申请,通过后将发送客户端下载指引到您的邮箱。</p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- 加入我们 -->
+    <section class="section join-section" id="join">
+        <h2 class="section-title">加入我们</h2>
+        <p style="text-align: center; margin-bottom: 3rem; color: var(--light-2); max-width: 800px; margin-left: auto; margin-right: auto;">
+            我们正在寻找有激情的美术资源开发者和技术开发者加入我们的团队,共同打造这款创新的中世纪沙盒生存MMO。我们提供有竞争力的报酬和远程工作选项。
+        </p>
+        
+        <div class="join-grid">
+            <div class="join-card">
+                <div class="join-icon">
+                    <i class="fas fa-palette"></i>
+                </div>
+                <h3>美术资源开发者</h3>
+                <p>负责游戏内角色、场景、道具、特效等美术资源的创建与优化，支持中世纪幻想风格的美术管线。</p>
+                
+                <ul class="join-list">
+                    <li><i class="fas fa-check"></i> 3D建模与纹理制作</li>
+                    <li><i class="fas fa-check"></i> 角色与场景设计</li>
+                    <li><i class="fas fa-check"></i> 动画制作与优化</li>
+                    <li><i class="fas fa-check"></i> 特效与粒子系统</li>
+                </ul>
+                
+                <a href="mailto:jobs-art@nexus-core.com?subject=美术资源开发者申请" class="join-cta">申请此职位</a>
+            </div>
+            
+            <div class="join-card">
+                <div class="join-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3>技术开发者</h3>
+                <p>负责游戏客户端、服务端、网络同步、数据库与支付系统等核心功能的开发与优化。</p>
+                
+                <ul class="join-list">
+                    <li><i class="fas fa-check"></i> 游戏客户端开发</li>
+                    <li><i class="fas fa-check"></i> 服务端架构与网络同步</li>
+                    <li><i class="fas fa-check"></i> 数据库设计与优化</li>
+                    <li><i class="fas fa-check"></i> 支付与安全系统</li>
+                </ul>
+                
+                <a href="mailto:jobs-tech@nexus-core.com?subject=技术开发者申请" class="join-cta">申请此职位</a>
+            </div>
+            
+            <div class="join-card">
+                <div class="join-icon">
+                    <i class="fas fa-language"></i>
+                </div>
+                <h3>国际化支持</h3>
+                <p>为国际版准备多语言支持，包括本地化翻译、文化适配、国际市场分析等工作。</p>
+                
+                <ul class="join-list">
+                    <li><i class="fas fa-check"></i> 多语言本地化</li>
+                    <li><i class="fas fa-check"></i> 文化适配与内容审核</li>
+                    <li><i class="fas fa-check"></i> 国际市场分析</li>
+                    <li><i class="fas fa-check"></i> 社区管理与运营</li>
+                </ul>
+                
+                <a href="mailto:jobs-intl@nexus-core.com?subject=国际化支持申请" class="join-cta">申请此职位</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 团队介绍 -->
+    <section class="section" id="team">
+        <h2 class="section-title">关于我们</h2>
+        
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h3>我们的使命</h3>
+                <p>打造一个深度、持久、社交驱动的虚拟世界，让玩家真正"居住"而非"游玩"。我们相信,真正的MMO应该提供持续的价值,而不仅仅是内容消耗。</p>
+            </div>
+            
+            <div class="team-card">
+                <div class="team-icon">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+                <h3>设计理念</h3>
+                <p>专注于构建有意义的社交系统与经济循环，而非单纯的任务清单。玩家之间的互动与故事，才是最宝贵的游戏内容。</p>
+            </div>
+            
+            <div class="team-card">
+                <div class="team-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h3>合作联系</h3>
+                <p>我们欢迎发行商、战略投资人与行业伙伴的交流。如果您对我们的项目感兴趣，请通过以下方式联系我们。</p>
+                
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>contact@nexus-core.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-comments"></i>
+                        <span>Discord社区即将开放</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -392,46 +1345,143 @@
 
     <!-- 页脚 -->
     <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3 data-i18n="footer.brand">元素浩劫：英雄重生</h3>
-                    <p data-i18n="footer.brandDesc">一款史诗级元素战斗角色扮演游戏，由幻影游戏工作室开发。掌握元素之力，拯救濒危世界！</p>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-discord"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                        <a href="#"><i class="fab fa-reddit"></i></a>
-                    </div>
-                </div>
-                <div class="footer-column">
-                    <h3 data-i18n="footer.quickLinks">快速链接</h3>
-                    <ul>
-                        <li><a href="#intro" data-i18n="nav.intro">游戏介绍</a></li>
-                        <li><a href="#features" data-i18n="nav.features">游戏特色</a></li>
-                        <li><a href="#screenshots" data-i18n="nav.screenshots">游戏截图</a></li>
-                        <li><a href="#characters" data-i18n="nav.characters">英雄角色</a></li>
-                        <li><a href="#requirements" data-i18n="nav.requirements">系统要求</a></li>
-                        <li><a href="#download" data-i18n="nav.download">立即下载</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3 data-i18n="footer.contact">联系我们</h3>
-                    <ul class="contact-info">
-                        <li><i class="fas fa-envelope"></i> <span data-i18n="footer.contactEmail">客服邮箱:mittss@zohomail.cn</span></li>
-                        <li><i class="fas fa-globe"></i> <span data-i18n="footer.contactWebsite">官方网站:www.mittss.com</span></li>
-                        <li><i class="fas fa-map-marker-alt"></i> <span data-i18n="footer.contactAddress">工作室地址：深圳市隆瀚科技有限公司，深圳市</span></li>
-                        <li><i class="fas fa-phone"></i> <span data-i18n="footer.contactPhone">客服热线:400-123-4567</span></li>
-                    </ul>
-                </div>
+        <div class="footer-content">
+            <div class="footer-links">
+                <h3>WastelandCovenant</h3>
+                <p>一款沙盒生存端游MMO,底层架构已全链路闭环，正在限量封测中。</p>
             </div>
-            <div class="copyright">
-                <p data-i18n="footer.copyright">© Shenzhen Longhan Technology Co., Ltd. 版权所有 | 《元素浩劫:英雄重生》是幻影MITTSS工作室的注册商标</p>
-                <p style="margin-top: 10px;" data-i18n="footer.copyrightNote">本游戏适合16岁以上玩家 | 包含幻想暴力内容</p>
+            
+            <div class="footer-links">
+                <h3>快速链接</h3>
+                <ul>
+                    <li><a href="#home">首页</a></li>
+                    <li><a href="#status">项目状态</a></li>
+                    <li><a href="#features">游戏特色</a></li>
+                    <li><a href="#dev-log">开发日志</a></li>
+                    <li><a href="#apply">封测申请</a></li>
+                    <li><a href="#join">加入我们</a></li>
+                </ul>
             </div>
+            
+            <div class="footer-links">
+                <h3>法律信息</h3>
+                <ul>
+                    <li><a href="#privacy">隐私政策</a></li>
+                    <li><a href="#terms">服务条款</a></li>
+                    <li><a href="#cookies">Cookie政策</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2026 Shenzhen Longhan Technology Co., Ltd. 保留所有权利。</p>
+            <p>本网站仅为项目展示与封测招募用途。游戏内容与设计可能会在开发过程中调整。</p>
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
+    <script>
+        // 移动端菜单切换
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    // 关闭移动端菜单
+                    const navLinks = document.getElementById('navLinks');
+                    navLinks.classList.remove('active');
+                    
+                    // 滚动到目标位置
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // 表单提交处理
+        document.getElementById('betaForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // 收集表单数据
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                contact: document.getElementById('contact').value,
+                experience: document.getElementById('experience').value,
+                interest: document.getElementById('interest').value,
+                message: document.getElementById('message').value,
+                timestamp: new Date().toISOString(),
+                userAgent: navigator.userAgent
+            };
+            
+            // 在实际部署中，这里应该将数据发送到后端API
+            // 现在使用console.log模拟
+            console.log('封测申请提交:', formData);
+            
+            // 显示成功消息
+            alert('感谢您的申请！我们会在3-5个工作日内审核您的申请，通过后将发送客户端下载指引到您的邮箱。');
+            
+            // 重置表单
+            document.getElementById('betaForm').reset();
+        });
+        
+        // 窗口滚动时更新导航栏样式
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.backgroundColor = 'rgba(15, 23, 42, 0.98)';
+                header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.2)';
+            } else {
+                header.style.backgroundColor = 'rgba(15, 23, 42, 0.95)';
+                header.style.boxShadow = 'none';
+            }
+        });
+        
+        // 页面加载时触发一次滚动事件
+        window.dispatchEvent(new Event('scroll'));
+        
+        // 响应式调整
+        window.addEventListener('resize', function() {
+            const navLinks = document.getElementById('navLinks');
+            if (window.innerWidth > 992) {
+                navLinks.classList.remove('active');
+            }
+        });
+        
+        // 语言切换功能
+        document.querySelectorAll('.language-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const lang = this.getAttribute('data-lang');
+                
+                // 更新所有语言按钮的文本
+                document.querySelectorAll('.language-btn span').forEach(span => {
+                    span.textContent = this.textContent;
+                });
+                
+                // 更新活动状态
+                document.querySelectorAll('.language-option').forEach(opt => {
+                    opt.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // 在实际应用中，这里会触发语言切换逻辑
+                console.log('切换语言到:', lang);
+                
+                // 这里可以添加实际的语言切换逻辑
+                // 例如：加载对应的语言文件，更新页面内容
+            });
+        });
+    </script>
 </body>
 </html>
